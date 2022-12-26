@@ -12,13 +12,118 @@
         <header id="banner" class="body">
                 <h1><a href="/">bl4log</a></h1>
                 <nav><ul>
+                    <li><a href="/category/build.html">build</a></li>
                     <li><a href="/category/python.html">Python</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/my-super-post.html">My super title</a></h1>
+                    <h1 class="entry-title"><a href="/build-openwrt-for-rpi4.html">build image for RPi4</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2022-12-26T14:21:00+08:00">
+                Published: Mon 26 December 2022
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/bl4.html">bl4</a>
+        </address>
+<p>In <a href="/category/build.html">build</a>.</p>
+<p>tags: <a href="/tag/openwrt.html">openwrt</a> <a href="/tag/rpi4.html">RPi4</a> </p>
+</footer><!-- /.post-info --><h3>可參考 底下連結，進行 初步流程了解</h3>
+<p><a href="https://ithelp.ithome.com.tw/articles/10255724">Build OpenWRT於Raspberry Pi4 - iT 邦幫忙::一起幫忙解決難題，拯救 IT 人的一天</a></p>
+<h3>注意項目：</h3>
+<ul>
+<li>libustream-wolfssl 必預要關閉，不然會無法成功產出</li>
+</ul>
+<h3>開發/修改/編譯：</h3>
+<ul>
+<li>QUILT 用法參考 <a href="http://wen00072.github.io/blog/2014/06/08/study-on-the-quilt/">http://wen00072.github.io/blog/2014/06/08/study-on-the-quilt/</a><ul>
+<li>quilt new <patch file name></li>
+<li>quilt add &lt;追蹤修改檔案路徑&gt;《進行檔案修改》</li>
+<li>quilt diff 《查看修改內容》</li>
+<li>quilt refresh 《儲存修改內容到 patch file name》</li>
+<li>quilt series 《查看 patches 清單》</li>
+</ul>
+</li>
+<li>
+<p>Apply/Modify kernel patch:</p>
+<ul>
+<li>make target/linux/{clean,prepare} V=s <strong>QUILT=1</strong></li>
+<li>quilt new <patch file name></li>
+<li>quilt add &lt;追蹤修改檔案路徑&gt;</li>
+<li>quilt refresh</li>
+<li>make target/linux/update package/index V=s 《更新到 build system》</li>
+<li>
+<p>make target/linux/refresh V=s 
+When a patched package (or kernel) is updated to a newer version, existing patches might not apply cleanly anymore and <em>patch</em> will report <em>fuzz</em> when applying them.To rebase the whole patch series the <em>refresh</em> make target can be used.</p>
+<p>參考 <a href="https://openwrt.org/docs/guide-developer/toolchain/use-patches-with-buildsystem">https://openwrt.org/docs/guide-developer/toolchain/use-patches-with-buildsystem</a></p>
+</li>
+<li>
+<p>make world 將會執行下面的內容：</p>
+<blockquote>
+<p>make target/compile
+make package/cleanup
+make package/compile
+make package/install
+make package/preconfig
+make target/install
+make package/index
+</p>
+</blockquote>
+<p>參考：<a href="https://openwrt.org/docs/techref/buildroot#customizing_the_kernel_options">https://openwrt.org/docs/techref/buildroot#customizing_the_kernel_options</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>OpenWRT image 編譯流程 - 參考 <a href="https://openwrt.org/zh-tw/doc/howto/build">https://openwrt.org/zh-tw/doc/howto/build</a></p>
+<ul>
+<li>./scripts/feeds update -a 《更新feeds》</li>
+<li>./scripts/feeds install -a 《安裝全部 package》</li>
+<li>
+<p>make menuconfig 《先選定 target system》</p>
+<blockquote>
+<p>依照特定的目標平台，套件需求和核心模組。標準的設定流程修改的部分包含:
+1）目標系統(Target system)
+2）套件選擇(Package selection)
+3）建置系統設定(Build system settings)
+4）核心模組(Kernel modules)</p>
+<div class="highlight"><pre><span></span><code>- make kernel_menuconfig 《設定 kernel 選項，如果有需要》
+- make 《進行編譯，會執行下面的內容》
+</code></pre></div>
+
+<p>1) 編譯 toolchain
+2) 用toolchain做跨平台編譯原始碼
+3) 產生opkg套件
+4) 產生可以<a href="https://openwrt.org/zh-tw/doc/howto/generic.flashing">flashed</a>的韌體映像檔</p>
+<ul>
+<li>Flash<ul>
+<li>sudo dd if=<image file> of=<SD device> bs=4M conv=fsync</li>
+<li>lsblk 《查詢 儲存裝置》</li>
+<li></li>
+</ul>
+</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h3>補充：</h3>
+<p>參考 <a href="https://openwrt.org/docs/guide-developer/toolchain/use-buildsystem">https://openwrt.org/docs/guide-developer/toolchain/use-buildsystem</a></p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/my-super-post.html" rel="bookmark"
+                           title="Permalink to My super title">My super title</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2022-12-06T12:36:00+08:00">
                 Published: Tue 06 December 2022
@@ -29,8 +134,12 @@
         </address>
 <p>In <a href="/category/python.html">Python</a>.</p>
 <p>tags: <a href="/tag/pelican.html">pelican</a> <a href="/tag/publishing.html">publishing</a> </p>
-</footer><!-- /.post-info --><p>This is the content of my super blog post.</p>                </article>
-            </aside><!-- /#featured -->
+</footer><!-- /.post-info -->                <p>Short version for index and feeds</p>
+                <a class="readmore" href="/my-super-post.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>links</h2>
