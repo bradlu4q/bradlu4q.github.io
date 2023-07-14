@@ -1,4 +1,4 @@
-theme: jekyll-theme-hacker
+# theme: jekyll-theme-hacker
 title: bl4q shares
 description: 
 remote_theme: pages-themes/hacker@v0.2.0
